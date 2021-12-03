@@ -1,0 +1,20 @@
+.nav{
+    @apply p-4 flex flex-row justify-between text-white ;
+    background: #5a200e;
+}
+
+.nav h1 {
+    @apply text-2xl
+}
+
+.nav-btn{
+    @apply w-1/5 h-10 ;
+    background: #361509;
+
+}
+
+.counter {
+    @apply rounded-lg h-6 w-6 inline-block align-middle ;
+    background: #5a200e;
+
+}

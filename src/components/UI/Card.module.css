@@ -1,0 +1,3 @@
+.card{
+    @apply rounded-xl shadow-2xl;
+}

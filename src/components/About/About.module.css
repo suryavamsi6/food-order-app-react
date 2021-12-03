@@ -1,0 +1,16 @@
+.about-div {
+    @apply flex flex-col p-32 ;
+}
+
+.about-card{
+    background: #313131;
+    @apply m-auto flex flex-col w-1/2 p-5 ;
+}
+
+.about-card h1 {
+    @apply text-white text-2xl text-center font-bold ;
+}
+
+.about-card p {
+    @apply text-white text-center mt-4 ;
+}

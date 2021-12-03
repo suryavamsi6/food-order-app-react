@@ -1,0 +1,30 @@
+.dish {
+    @apply grid grid-rows-3 grid-flow-col border-b-2 p-3;
+}
+
+.quantity {
+    @apply col-end-4 flex flex-row justify-evenly ;
+}
+
+.price {
+    @apply text-red-700
+
+}
+
+.dish h1 {
+    @apply font-bold;
+}
+
+.dish h3 {
+    @apply italic;
+}
+
+.dish input{
+    @apply w-10 h-6  ;
+}
+
+.dish Button {
+    @apply col-end-4 row-end-4 w-24 justify-self-center ;
+    background: #5a200e;
+
+}

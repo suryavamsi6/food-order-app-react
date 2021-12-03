@@ -1,0 +1,9 @@
+.dishes-div {
+    @apply flex flex-col  ;
+
+}
+
+.dishes-card {
+    @apply m-auto flex flex-col w-1/2 p-5 bg-white ;
+}
+
