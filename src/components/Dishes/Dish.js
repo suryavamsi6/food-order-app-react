@@ -1,35 +1,31 @@
 import styles from "./Dish.module.css";
 import Button from "../UI/Button";
-import { useContext, useState } from "react";
+import { useContext, useRef } from "react";
 import CartContext from "../../store/cart-context";
 
 export function Dish(props) {
-  const ctx = useContext(CartContext);
-  const [enteredQuant, setEnteredQuant] = useState({
-    title: props.name,
-    cost: props.cost,
-    quantity: "",
-  });
+  const cartCtx = useContext(CartContext);
 
-  const inputChangeHandler = (event) => {
-    setEnteredQuant((prevState) => {
-      return {
-        ...prevState,
-        quantity: event.target.value,
-      };
-    });
-  };
+  const amountInputRef = useRef(0);
+
   const submitHandler = (event) => {
     event.preventDefault();
-    if (enteredQuant.quantity > 0) {
-      console.log(enteredQuant.quantity);
-      const index = ctx.findIndex((item) => item.title === props.name);
-      if (index >= 0) {
-        ctx[index].quantity = enteredQuant.quantity;
-      } else {
-        ctx.push(enteredQuant);
-      }
+    const enteredAmount = amountInputRef.current.value;
+    const enteredAmountNumber = +enteredAmount;
+    if (
+      enteredAmount.trim().length === 0 ||
+      enteredAmountNumber < 1 ||
+      enteredAmountNumber > 5
+    ) {
+      return;
     }
+    cartCtx.addItem({
+      id: props.id,
+      name: props.name,
+      amount: enteredAmountNumber,
+      price: props.cost,
+    });
+    amountInputRef.current.value = 0;
   };
 
   return (
@@ -44,7 +40,7 @@ export function Dish(props) {
           step="1"
           defaultValue="0"
           min="0"
-          onChange={inputChangeHandler}
+          ref={amountInputRef}
         />
       </div>
       <Button type="submit">+ Add</Button>

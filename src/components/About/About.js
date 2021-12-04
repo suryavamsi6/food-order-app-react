@@ -1,9 +1,13 @@
 import styles from "./About.module.css";
 import Card from "../UI/Card";
+import mealsImage from "../../assets/meals.jpg";
 
 const About = () => {
   return (
     <div className={styles["about-div"]}>
+      <div className={styles["main-image"]}>
+        <img src={mealsImage} />
+      </div>
       <Card className={styles["about-card"]}>
         <h1>Delicious Food, Delivered To You</h1>
         <p>

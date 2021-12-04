@@ -1,5 +1,5 @@
 .btn{
-    @apply rounded-full text-white  ;
+    @apply rounded-full text-white;
 }
 
 .btn svg{
