@@ -1,9 +1,12 @@
 import { useFormik } from "formik";
 import useHttp from "../../hooks/use-http";
-import { useState } from "react";
+import styles from "./OrderForm.module.css";
+import CartContext from "../../store/cart-context";
+import { useContext } from "react";
 
 const OrderForm = (props) => {
-  const { sendRequest: addOrder, isLoading, error } = useHttp();
+  const { sendRequest: addOrder } = useHttp();
+  const cartCtx = useContext(CartContext);
 
   const validate = (values) => {
     const errors = {};
@@ -50,69 +53,76 @@ const OrderForm = (props) => {
     },
     validate,
     onSubmit: (values) => {
+      const orderObj = {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        phoneNumber: values.phoneNumber,
+        email: values.email,
+        address: values.address,
+        total: cartCtx.totalAmount,
+        ...cartCtx.items,
+      };
       addOrder({
         url: "https://food-order-app-react-60fc7-default-rtdb.firebaseio.com/orders.json",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: values,
+        body: orderObj,
       });
+      cartCtx.clearCart();
     },
   });
   return (
-    <>
-      <form onSubmit={formik.handleSubmit}>
-        <label htmlFor="firstName">First Name</label>
-        <input
-          id="firstName"
-          name="firstName"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.firstName}
-        />
-        {formik.errors.firstName ? <div>{formik.errors.firstName}</div> : null}
-        <label htmlFor="lastName">Last Name</label>
-        <input
-          id="lastName"
-          name="lastName"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.lastName}
-        />
-        {formik.errors.lastName ? <div>{formik.errors.lastName}</div> : null}
-        <label htmlFor="email">Email</label>
-        <input
-          id="email"
-          name="email"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.email}
-        />
-        {formik.errors.email ? <div>{formik.errors.email}</div> : null}
-        <label htmlFor="address">Address</label>
-        <input
-          id="address"
-          name="address"
-          type="textarea"
-          onChange={formik.handleChange}
-          value={formik.values.address}
-        />
-        {formik.errors.address ? <div>{formik.errors.address}</div> : null}
-        <label htmlFor="phoneNumber">Phone Number</label>
-        <input
-          id="phoneNumber"
-          name="phoneNumber"
-          type="number"
-          onChange={formik.handleChange}
-          value={formik.values.phoneNumber}
-        />
-        {formik.errors.phoneNumber ? (
-          <div>{formik.errors.phoneNumber}</div>
-        ) : null}
-        <button type="submit">Order Now</button>
-      </form>
-    </>
+    <form className={styles["order-form"]} onSubmit={formik.handleSubmit}>
+      <label htmlFor="firstName">First Name</label>
+      <input
+        id="firstName"
+        name="firstName"
+        type="text"
+        onChange={formik.handleChange}
+        value={formik.values.firstName}
+      />
+      {formik.errors.firstName ? <div>{formik.errors.firstName}</div> : null}
+      <label htmlFor="lastName">Last Name</label>
+      <input
+        id="lastName"
+        name="lastName"
+        type="text"
+        onChange={formik.handleChange}
+        value={formik.values.lastName}
+      />
+      {formik.errors.lastName ? <div>{formik.errors.lastName}</div> : null}
+      <label htmlFor="email">Email</label>
+      <input
+        id="email"
+        name="email"
+        type="text"
+        onChange={formik.handleChange}
+        value={formik.values.email}
+      />
+      {formik.errors.email ? <div>{formik.errors.email}</div> : null}
+      <label htmlFor="address">Address</label>
+      <textarea
+        id="address"
+        name="address"
+        onChange={formik.handleChange}
+        value={formik.values.address}
+      />
+      {formik.errors.address ? <div>{formik.errors.address}</div> : null}
+      <label htmlFor="phoneNumber">Phone Number</label>
+      <input
+        id="phoneNumber"
+        name="phoneNumber"
+        type="tel"
+        onChange={formik.handleChange}
+        value={formik.values.phoneNumber}
+      />
+      {formik.errors.phoneNumber ? (
+        <div>{formik.errors.phoneNumber}</div>
+      ) : null}
+      <button type="submit">Order Now</button>
+    </form>
   );
 };
 

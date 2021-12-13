@@ -1,0 +1,22 @@
+.order-form{
+ @apply flex flex-col;
+}
+
+.order-form input {
+    @apply border border-gray-300 rounded ;
+}
+.order-form textarea {
+    @apply border border-gray-300 rounded ;
+}
+.order-form label{
+    @apply block;
+}
+
+.order-form div {
+    @apply text-red-600;
+}
+
+.order-form button {
+    @apply rounded-2xl m-auto text-white p-1.5 ;
+    background-color:  #8a2b06;
+}

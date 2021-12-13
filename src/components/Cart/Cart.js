@@ -6,7 +6,7 @@ import CartItem from "./CartItem";
 import OrderForm from "../OrderForm/OrderForm";
 const Cart = (props) => {
   const cartCtx = useContext(CartContext);
-  const [clicked, setClicked] = useState(false);
+  const [formIsShown, setFormIsShown] = useState(false);
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
 
   const hasItems = cartCtx.items.length > 0;
@@ -35,13 +35,13 @@ const Cart = (props) => {
   );
   const clickHandler = (event) => {
     event.preventDefault();
-    setClicked(true);
+    setFormIsShown(true);
   };
-  const orderPage = <OrderForm />;
+
   return (
     <Modal onHideCart={props.onHideCart}>
-      {clicked && orderPage}
-      {!clicked && cartItems}
+      {!formIsShown && cartItems}
+      {formIsShown && hasItems && <OrderForm onHideCart={props.onHideCart} />}
       <div className={classes.total}>
         <span>Total Amount</span>
         <span>{totalAmount}</span>
