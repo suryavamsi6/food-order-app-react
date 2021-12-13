@@ -1,0 +1,7 @@
+.loading{
+    @apply font-bold m-auto;
+}
+
+.error {
+    @apply font-bold m-auto text-red-600;
+}

@@ -1,42 +1,54 @@
 import { Dish } from "./Dish";
-
-const items = [
-  {
-    id: "1",
-    name: "Sushi",
-    description: "Finest fish and veggies",
-    cost: 22.99,
-  },
-  {
-    id: "2",
-    name: "Schnitzel",
-    description: "A german speciality",
-    cost: 16.5,
-  },
-  {
-    id: "3",
-    name: "Barbeque Burger",
-    description: "American, raw, meaty",
-    cost: 12.99,
-  },
-  {
-    id: "4",
-    name: "Green Bowl",
-    description: "Health...and green...",
-    cost: 18.99,
-  },
-];
+import useHttp from "../../hooks/use-http";
+import { useEffect, useState } from "react";
+import styles from "./DishList.module.css";
 
 const DishList = (props) => {
-  return items.map((item) => (
-    <Dish
-      key={item.id}
-      id={item.id}
-      name={item.name}
-      description={item.description}
-      cost={item.cost}
-    />
-  ));
+  const [items, setItems] = useState([]);
+  const { sendRequest: fetchDishes, isLoading, error } = useHttp();
+
+  const transformData = (dishObj) => {
+    const loadedDishes = [];
+    for (const key in dishObj) {
+      console.log(key);
+      loadedDishes.push({
+        id: key,
+        name: dishObj[key].name,
+        description: dishObj[key].description,
+        cost: dishObj[key].cost,
+      });
+    }
+    setItems(loadedDishes);
+  };
+
+  useEffect(() => {
+    fetchDishes(
+      {
+        url: "https://food-order-app-react-60fc7-default-rtdb.firebaseio.com/dishes.json",
+      },
+      transformData
+    );
+  }, [fetchDishes]);
+
+  let content = "";
+  if (isLoading) {
+    content = <p className={styles.loading}>Loading...</p>;
+  } else {
+    content = items.map((item) => (
+      <Dish
+        key={item.id}
+        id={item.id}
+        name={item.name}
+        description={item.description}
+        cost={item.cost}
+      />
+    ));
+  }
+  if (error) {
+    content = <p className={styles.error}> {error}</p>;
+  }
+
+  return content;
 };
 
 export default DishList;
